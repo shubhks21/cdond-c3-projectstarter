@@ -135,7 +135,7 @@ jobs:
       - checkout
       - run:
           name: Install tar and gzip
-          command: apt-get update && apt-get install -y tar gzip
+          command: yum update -y && yum install -y tar gzip && yum clean all
       - run:
           name: Ensure back-end infrastructure exists
           command: |
