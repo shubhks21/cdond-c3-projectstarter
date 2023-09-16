@@ -290,6 +290,7 @@ jobs:
           fingerprints: ["2c:f2:09:60:91:bb:6b:63:f1:83:e7:20:32:4f:ac:4f"]
       # attach workspace
       - attach_workspace:
+          at: ~/
       - run:
           name: Install dependencies
           command: |
