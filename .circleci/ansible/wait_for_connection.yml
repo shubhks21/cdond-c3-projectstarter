@@ -1,0 +1,9 @@
+- name: Wait for target machine to become reachable
+  hosts: all
+  gather_facts: false
+
+  tasks:
+    - name: Wait for connection
+      wait_for_connection:
+        delay: 10
+        timeout: 300
