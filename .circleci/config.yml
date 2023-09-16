@@ -176,7 +176,7 @@ jobs:
           name: Add back-end ip to ansible inventory
           command: |
               # Your code here
-              apt-get update && apt-get install -y awscli
+              # apt-get update && apt-get install -y awscli (aws image already in use then why added this :) )
               export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
               echo "backend ansible_host=$BACKEND_IP ansible_user=ec2-user" >> .circleci/ansible/inventory.txt
       - persist_to_workspace:
