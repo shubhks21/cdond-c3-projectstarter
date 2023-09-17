@@ -246,7 +246,8 @@ jobs:
   deploy-frontend:
     docker:
       # Docker image here that supports AWS CLI
-      - image: amazon/aws-cli
+      # - image: amazon/aws-cli
+      - image: circleci/node:13.8.0
     steps:
       # Checkout code from git
       - checkout
@@ -254,17 +255,19 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
-            source ~/.nvm/nvm.sh
-            nvm install node
+            curl "https://d1vvhvl2y92vvt.cloudfront.net/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+            unzip awscliv2.zip
+            sudo ./aws/install
+            #source ~/.nvm/nvm.sh
+            #nvm install node
             # yum install -y nodejs npm tar gzip
             # yum update -y && yum install -y tar gzip && yum clean all
             # apk add --no-cache nodejs npm
             # apt-get update
             # apt-get install -y nodejs npm tar gzip
             # ln -s /usr/bin/nodejs /usr/bin/node
-      - attach_workspace:
-          at: ~/
+      #- attach_workspace:
+      #    at: ~/
       - run:
           name: Get backend url
           command: |
