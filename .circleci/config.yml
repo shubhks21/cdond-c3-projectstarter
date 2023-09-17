@@ -254,7 +254,10 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            yum install -y nodejs npm tar gzip
+            curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.38.0/install.sh | bash
+            source ~/.nvm/nvm.sh
+            nvm install node
+            # yum install -y nodejs npm tar gzip
             # yum update -y && yum install -y tar gzip && yum clean all
             # apk add --no-cache nodejs npm
             # apt-get update
