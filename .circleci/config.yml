@@ -256,12 +256,17 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            apk add --no-cache python3 ansible nodejs npm
+            # yum update -y && yum install -y tar gzip && yum clean all
+            # apk add --no-cache nodejs npm
+            apt-get update
+            apt-get install -y nodejs npm tar gzip
+            ln -s /usr/bin/nodejs /usr/bin/node
       - run:
           name: Get backend url
           command: |
             # your code here
-            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+            # export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=udapeoplebe" --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             echo "API_URL = ${API_URL}"
@@ -298,9 +303,10 @@ jobs:
           command: |
             # your code here
             sudo apt-get update
-            sudo apt-get install -y tar gzip ansible
+            sudo apt-get install -y tar gzip
             curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
             sudo apt-get install -y nodejs
+            pip install awscli
       - run:
           name: Install npm
           command: |
@@ -341,7 +347,7 @@ jobs:
           name: Get backend url
           command: |
             # your code here
-            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=udapeoplebe" --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
       - run:
