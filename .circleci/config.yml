@@ -250,8 +250,6 @@ jobs:
     steps:
       # Checkout code from git
       - checkout
-      - attach_workspace:
-          at: ~/
       - run:
           name: Install dependencies
           command: |
@@ -261,6 +259,8 @@ jobs:
             apt-get update
             apt-get install -y nodejs npm tar gzip
             ln -s /usr/bin/nodejs /usr/bin/node
+      - attach_workspace:
+          at: ~/
       - run:
           name: Get backend url
           command: |
@@ -307,10 +307,10 @@ jobs:
             curl -sL https://deb.nodesource.com/setup_14.x | sudo -E bash -
             sudo apt-get install -y nodejs
             pip install awscli
-      - run:
-          name: Install npm
-          command: |
-            sudo npm install -g npm
+      #- run:
+      #    name: Install npm
+      #    command: |
+      #      sudo npm install -g npm
       - run:
           name: Deploy backend
           command: |
