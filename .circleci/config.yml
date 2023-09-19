@@ -339,7 +339,7 @@ jobs:
   smoke-test:
     docker:
       # Lightweight Docker image
-      - image: alpine:latest
+      - image: cimg/aws:2023.09.1
     steps:
       # Checkout code from git
       - checkout
@@ -347,20 +347,24 @@ jobs:
           name: Install dependencies
           command: |
             # your code here
-            apk add curl nodejs npm
-            apk add --update python3 py3-pip
-            pip3 install awscli
+            sudo apt install curl
+            #apk add curl nodejs npm
+            #apk add --update python3 py3-pip
+            #pip3 install awscli
+      #- run:
+      #    name: Get backend url
+      #    command: |
+      #      # your code here
+      #      export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=udapeoplebe" --output text)
+      #      export API_URL="http://${BACKEND_IP}:3030"
+      #      echo "${API_URL}"
       - run:
-          name: Get backend url
+          name: Backend smoke test.
           command: |
             # your code here
             export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=udapeoplebe" --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
-      - run:
-          name: Backend smoke test.
-          command: |
-            # your code here
             if curl "${API_URL}/api/status" | grep "ok"
             then
               return 0
@@ -375,7 +379,7 @@ jobs:
             echo ${URL}
             if curl -s ${URL} | grep "Welcome"
             then
-              return 0
+              return 1
             else
               return 1
             fi
