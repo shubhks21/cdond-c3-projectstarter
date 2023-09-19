@@ -243,6 +243,7 @@ jobs:
             cd backend
             npm install
             npm run migrations > migrations_dump.txt
+            cat migrations_dump.txt
       - run:
           name: Send migration status to kvdb.io
           command: |
@@ -350,6 +351,9 @@ jobs:
             cd ..
             ## Zip the directory
             tar -C backend -czvf artifact.tar.gz .
+            echo "folder content"
+            ls
+            pwd
             cd .circleci/ansible
             echo "Contents  of the inventory.txt file is -------"
             cat inventory.txt
