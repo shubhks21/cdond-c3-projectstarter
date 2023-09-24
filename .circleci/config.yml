@@ -251,7 +251,9 @@ jobs:
             # Your code here
             if grep -q "has been executed successfully." ~/project/backend/migrations_dump.txt
             then
-              curl https://kvdb.io/Bke8cmeq4fa6CtcMJAZyWK/migration_${CIRCLE_WORKFLOW_ID:0:7}  -d '1'
+              kvdb_url="https://kvdb.io/Bke8cmeq4fa6CtcMJAZyWK/migration_${CIRCLE_WORKFLOW_ID:0:7}"
+              curl --insecure ${kvdb_url} -d '1'
+              echo "it worked"
             fi
       # Here's where you will add some code to rollback on failure      
       - destroy-environment
