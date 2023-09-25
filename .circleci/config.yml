@@ -293,7 +293,7 @@ jobs:
           command: |
             # your code here
             # export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[0].Instances[0].PublicIpAddress' --output text)
-            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicIpAddress' --filters "Name=tag:project,Values=udapeoplebe" --output text)
+            export BACKEND_IP=$(aws ec2 describe-instances --query 'Reservations[*].Instances[*].PublicDnsName' --filters "Name=tag:project,Values=udapeoplebe" --output text)
             export API_URL="http://${BACKEND_IP}:3030"
             echo "${API_URL}"
             echo "API_URL = ${API_URL}"
@@ -458,7 +458,7 @@ jobs:
       # Checkout code from git
       - checkout
       - run:
-          name: Get old stack workflow id
+          name: Get old stack workflow id and delete unused resources
           command: |
             # your code here
             #export OldWorkflowID="the id here"
@@ -476,9 +476,11 @@ jobs:
             if [[ "${STACKS[@]}" =~ "${OldWorkflowID}" ]]
             then
               # your code here
+              echo "deletion started"
               aws s3 rm "s3://udapeople-${OldWorkflowID}" --recursive
               aws cloudformation delete-stack --stack-name "udapeople-be-${OldWorkflowID}"
               aws cloudformation delete-stack --stack-name "udapeople-fe-${OldWorkflowID}"
+              echo "deletion ended"
             fi
 
 workflows:
